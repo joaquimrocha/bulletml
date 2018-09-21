@@ -1,0 +1,52 @@
+{
+  "name": "bulletml",
+  "buildsystem": "simple",
+  "sources": [
+    {
+      "type": "archive",
+      "url": "http://http.debian.net/debian/pool/main/b/bulletml/bulletml_0.0.6.orig.tar.gz",
+      "sha256": "162544e708cd8f61c944f7eac2a0403d2900d29fa9b1dc45235cfccfac8ae960"
+    },
+    {
+      "type": "patch",
+      "path": "patches/fixes.patch"
+    },
+    {
+      "type": "patch",
+      "path": "patches/bulletml_d.patch"
+    },
+    {
+      "type": "patch",
+      "path": "patches/d_cpp.patch"
+    },
+    {
+      "type": "patch",
+      "path": "patches/warnings.patch"
+    },
+    {
+      "type": "patch",
+      "path": "patches/makefile.patch"
+    },
+    {
+      "type": "patch",
+      "path": "patches/includes.patch"
+    },
+    {
+      "type": "patch",
+      "path": "patches/get-rid-of-boost.patch"
+    }
+  ],
+  "build-commands": [
+    "rm -f src/calc.cpp",
+    "rm -f src/*.o src/*/*.o",
+    "make -C src CXXFLAGS=\"$(CXXFLAGS) $(CPPFLAGS)\" libbulletml.a",
+    "rm -f src/*.o src/*/*.o",
+    "make -C src CXXFLAGS=\"$(CXXFLAGS) $(CPPFLAGS) -fPIC -fpic\" LDFLAGS=\"$(LDFLAGS) -Wl,-z,defs\" libbulletml.so",
+    "mkdir -p /app/include/d/ /app/include/bulletml/ /app/include/bulletml/tinyxml/ /app/lib",
+    "cp src/bulletml.d /app/include/d/",
+    "cp src/*.h /app/include/bulletml/",
+    "cp src/tinyxml/*.h /app/include/bulletml/tinyxml/",
+    "cp src/lib*.a /app/lib/",
+    "cp src/lib*.so* /app/lib/"
+  ]
+}
